@@ -40,8 +40,12 @@ RUN . /opt/ros/$ROS_DISTRO/setup.sh \
      --ignore-src \
  && rm -rf /var/lib/apt/lists/*
 
+# Use catkin build
+RUN apt-get update \
+ && apt-get install -y python3-catkin-tools \
+ && rm -rf /var/lib/apt/lists/*
+ 
 RUN . /opt/ros/$ROS_DISTRO/setup.sh \
  && cd /catkin_ws \
- && catkin_make -j1
- 
- 
+ && catkin init \
+ && catkin build -j2 --no-status -DCMAKE_BUILD_TYPE=Release
